@@ -11,7 +11,7 @@ export function Frets({totalFret}: {totalFret: number}) {
         const fret = index + 1;
 
         return (
-          <Fret key={index}>
+          <Fret key={index} fret={fret}>
             {MARKER_POINTS.includes(fret) ? (
               fret !== 12 ? (
                 <Marker />

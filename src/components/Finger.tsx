@@ -1,14 +1,13 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import {GuitarTone} from '../models/Sound';
+import {colors} from '../theme/colors';
 
-export function Finger({fret}: {fret: number}) {
+export function Finger({sound}: {sound: GuitarTone}) {
   return (
-    <TouchableOpacity
-      style={styles.finger}
-      onPress={() => {
-        console.log(fret);
-      }}>
+    <View style={styles.finger}>
       <View style={styles.line} />
-    </TouchableOpacity>
+      <Text style={styles.sound}>{sound}</Text>
+    </View>
   );
 }
 
@@ -19,8 +18,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   line: {
-    borderWidth: 4,
+    borderWidth: 2,
     width: 1,
     flex: 1,
+    borderColor: colors.string,
+  },
+  sound: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    fontWeight: 'bold',
   },
 });

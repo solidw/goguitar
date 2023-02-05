@@ -1,13 +1,22 @@
 import {StyleSheet, View} from 'react-native';
+import {GuitarNote} from '../models/Sound';
 import {range} from '../utils/range';
 import {Finger} from './Finger';
 
-export function String({totalFret}: {totalFret: number}) {
+export function String({
+  totalFret,
+  baseSound,
+}: {
+  totalFret: number;
+  baseSound: GuitarNote;
+}) {
   return (
     <View style={styles.string}>
       {range(totalFret).map((_, index) => {
         const fret = index + 1;
-        return <Finger fret={fret} />;
+        const sound = baseSound.intervalTo('up', fret);
+
+        return <Finger key={index} sound={sound} />;
       })}
     </View>
   );

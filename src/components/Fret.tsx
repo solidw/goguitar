@@ -1,16 +1,32 @@
 import {ReactNode} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {colors} from '../theme/colors';
 
-export function Fret({children}: {children?: ReactNode}) {
-  return <View style={styles.line}>{children}</View>;
+export function Fret({children, fret}: {children?: ReactNode; fret: number}) {
+  return (
+    <View style={styles.line}>
+      <View style={styles.fretContainer}>
+        <Text style={styles.fretNumber}>{fret}</Text>
+      </View>
+      {children}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   line: {
     flex: 1,
-    borderBottomWidth: 10,
+    borderBottomWidth: 3,
     borderBottomColor: colors.fret,
-    borderRadius: 5,
+  },
+  fretContainer: {
+    position: 'absolute',
+    bottom: -10,
+    backgroundColor: colors.fret,
+    padding: 2,
+  },
+  fretNumber: {
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
