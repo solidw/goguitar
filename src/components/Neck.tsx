@@ -1,34 +1,44 @@
 import {useState} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
-import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 import {TOTAL_FRET} from '../constants/constants';
 import {colors} from '../theme/colors';
 import {Frets} from './Frets';
 import {Strings} from './Strings';
-
-const getSafeScale = (scale: number, min: number, max: number) => {
-  const integerScale = Math.round(scale);
-  return Math.min(Math.max(integerScale, min), max);
-};
+import {FretControlModal} from './FretControlModal';
 
 export function Neck() {
   const [totalFret, setTotalFret] = useState(TOTAL_FRET);
+  const [isOpenFretControl, setIsOpenFretControl] = useState(false);
 
-  const gesture = Gesture.Pinch().onUpdate(event => {
-    const fret = getSafeScale(event.scale, 1, TOTAL_FRET);
-    setTotalFret(fret);
+  const gesture = Gesture.Tap().onEnd(() => {
+    setIsOpenFretControl(true);
   });
 
   return (
-    <GestureDetector gesture={gesture}>
-      <ScrollView
-        style={styles.container}
-        horizontal={true}
-        contentContainerStyle={styles.contents}>
-        <Frets totalFret={totalFret} />
-        <Strings totalFret={totalFret} />
-      </ScrollView>
-    </GestureDetector>
+    <SafeAreaView>
+      <FretControlModal
+        fret={totalFret}
+        onFretChange={setTotalFret}
+        visible={isOpenFretControl}
+        onClose={() => setIsOpenFretControl(false)}
+      />
+      <GestureHandlerRootView>
+        <GestureDetector gesture={gesture}>
+          <ScrollView
+            style={styles.container}
+            horizontal={true}
+            contentContainerStyle={styles.contents}>
+            <Frets totalFret={totalFret} />
+            <Strings totalFret={totalFret} />
+          </ScrollView>
+        </GestureDetector>
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
 }
 
