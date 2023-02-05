@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "android:build": "cd android && ./gradlew assembleRelease",
+    "android:clean": "cd android && ./gradlew clean",
+    "android:build:apk": "yarn android:clean && cd android && ./gradlew assembleRelease",
+    "android:build:bundle": "yarn android:clean && cd android && ./gradlew bundleRelease",
     "ios": "react-native run-ios",
     "ios:build": "echo \"서명이 없음\"",
     "start": "react-native start",
