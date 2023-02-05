@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {ScrollView, StyleSheet} from 'react-native';
-import {PinchGestureHandler} from 'react-native-gesture-handler';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import {TOTAL_FRET} from '../constants/constants';
 import {colors} from '../theme/colors';
 import {Frets} from './Frets';
@@ -14,13 +14,13 @@ const getSafeScale = (scale: number, min: number, max: number) => {
 export function Neck() {
   const [totalFret, setTotalFret] = useState(TOTAL_FRET);
 
-  return (
-    <PinchGestureHandler
-      onGestureEvent={e => {
-        const {scale} = e.nativeEvent;
+  const gesture = Gesture.Pinch().onUpdate(event => {
+    const fret = getSafeScale(event.scale, 1, TOTAL_FRET);
+    setTotalFret(fret);
+  });
 
-        setTotalFret(getSafeScale(totalFret + (1 - scale) * 10, 1, TOTAL_FRET));
-      }}>
+  return (
+    <GestureDetector gesture={gesture}>
       <ScrollView
         style={styles.container}
         horizontal={true}
@@ -28,7 +28,7 @@ export function Neck() {
         <Frets totalFret={totalFret} />
         <Strings totalFret={totalFret} />
       </ScrollView>
-    </PinchGestureHandler>
+    </GestureDetector>
   );
 }
 
